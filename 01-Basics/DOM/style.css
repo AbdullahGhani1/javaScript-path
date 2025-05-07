@@ -1,0 +1,170 @@
+/* style.css */
+
+/* 1. Theme variables for easy theming and maintenance */
+:root {
+  /* Colors */
+  --color-bg: #0a0a0a;
+  --color-surface: #1a1a1a;
+  --color-primary: #3b82f6;
+  --color-secondary: #f87171;
+  --color-text: #e5e5e5;
+  --color-heading: #ffffff;
+
+  /* Typography */
+  --font-sans: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  --font-heading: "Montserrat", sans-serif;
+  --text-size-base: 1rem;
+  --text-size-lg: 1.125rem;
+  --text-size-xl: 1.5rem;
+
+  /* Spacing */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 2rem;
+  --space-xl: 4rem;
+
+  /* Misc */
+  --radius: 0.75rem;
+  --transition: 0.3s ease-in-out;
+  --shadow-neu: 8px 8px 16px rgba(0, 0, 0, 0.4),
+    -8px -8px 16px rgba(255, 255, 255, 0.05);
+}
+
+/* Global resets */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: var(--text-size-base);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* Utility */
+.bg-black {
+  background-color: var(--color-surface);
+}
+
+main {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: var(--space-lg);
+  padding: var(--space-lg);
+}
+
+/* Sections flow in single column on mobile, two columns on desktop */
+section {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-md);
+}
+@media (min-width: 768px) {
+  section {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+header {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius);
+  padding: var(--space-md);
+  text-align: center;
+}
+
+header .heading {
+  font-family: var(--font-heading);
+  font-size: var(--text-size-xl);
+  color: var(--color-heading);
+}
+
+.button {
+  display: flex;
+  padding: var(--space-sm) var(--space-md);
+  font-size: var(--text-size-lg);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-neu);
+  color: var(--color-text);
+  border: none;
+  cursor: pointer;
+  transition: box-shadow var(--transition);
+}
+.button:hover {
+  box-shadow: inset var(--shadow-neu);
+}
+
+.list li {
+  position: relative;
+  padding: var(--space-sm) var(--space-md);
+  overflow: hidden;
+  cursor: pointer;
+  transition: color var(--transition);
+}
+
+body {
+  background: linear-gradient(45deg, #1e3a8a, #9333ea, #f43f5e, #10b981);
+  background-size: 400% 400%;
+  animation: gradientBG 20s ease infinite;
+}
+
+@keyframes gradientBG {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* WebKit browsers */
+body::-webkit-scrollbar {
+  width: 12px;
+}
+body::-webkit-scrollbar-track {
+  background: var(--color-surface);
+  border-radius: var(--radius);
+}
+body::-webkit-scrollbar-thumb {
+  background: var(--color-primary);
+  border-radius: var(--radius);
+}
+
+/* Firefox */
+body {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-primary) var(--color-surface);
+}
+
+.subheading {
+  font-family: var(--font-heading);
+  font-size: var(--text-size-xl);
+  color: var(--color-primary);
+  opacity: 0;
+  transform: translateY(20px);
+  animation: reveal 1s forwards;
+}
+.text {
+  opacity: 0;
+  animation: reveal 1.2s forwards;
+}
+@keyframes reveal {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
