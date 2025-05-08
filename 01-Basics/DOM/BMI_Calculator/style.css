@@ -1,0 +1,162 @@
+/* Reset and base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+body {
+  transition: background 0.5s ease;
+}
+
+.dark-mode {
+  /* background: linear-gradient(135deg, #1e1e1e, #2c3e50); */
+  background-image: linear-gradient(
+    to right,
+    #141e30 0%,
+    #243b55 51%,
+    #141e30 100%
+  );
+  color: #fff;
+}
+
+/* Glassmorphism container */
+.container.glass {
+  max-width: 400px;
+  margin: 5% auto;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+  text-align: center;
+}
+
+.neon-text {
+  font-size: 2rem;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-shadow: 0 0 2px #fff, 0 0 4px #fff, 0 0 8px #ff00ff, 0 0 12px #ff00ff,
+    0 0 16px #ff00ff, 0 0 20px #ff00ff;
+  animation: neon-glow 1.8s ease-in-out infinite alternate,
+    neon-color 5s linear infinite;
+  display: inline-block; /* to allow filter animation */
+  filter: hue-rotate(0deg);
+}
+
+@keyframes neon-glow {
+  from {
+    text-shadow: 0 0 2px #fff, 0 0 4px #fff, 0 0 8px #ff00ff, 0 0 12px #ff00ff,
+      0 0 16px #ff00ff, 0 0 20px #ff00ff;
+  }
+  to {
+    text-shadow: 0 0 4px #fff, 0 0 8px #fff, 0 0 12px #ff00ff, 0 0 16px #ff00ff,
+      0 0 20px #ff00ff, 0 0 24px #ff00ff;
+  }
+}
+
+@keyframes neon-color {
+  0% {
+    filter: hue-rotate(0deg);
+  }
+  100% {
+    filter: hue-rotate(360deg);
+  }
+}
+
+/* Form styles */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+input {
+  padding: 0.5rem;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+}
+
+button {
+  padding: 0.5rem;
+  border: none;
+  border-radius: 5px;
+  background: linear-gradient(
+    90deg,
+    rgba(42, 123, 155, 1) 0%,
+    rgba(87, 199, 133, 1) 50%,
+    rgba(237, 221, 83, 1) 100%
+  );
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+button:hover {
+  background: radial-gradient(
+    circle,
+    rgba(42, 123, 155, 1) 0%,
+    rgba(87, 199, 133, 1) 50%,
+    rgba(237, 221, 83, 1) 100%
+  );
+}
+
+/* Result and guide */
+#result {
+  margin: 1rem 0;
+  font-weight: bold;
+}
+
+.bmi-guide {
+  text-align: left;
+  margin-top: 1rem;
+}
+
+/* Theme toggle */
+.theme-toggle {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+.toggle-label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  width: 60px;
+  height: 30px;
+  background: #ccc;
+  border-radius: 15px;
+  position: relative;
+}
+
+.toggle-label .ball {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 24px;
+  height: 24px;
+  background: #fff;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+}
+
+#toggle:checked + .toggle-label .ball {
+  transform: translateX(30px);
+}
+
+.toggle-label .sun,
+.toggle-label .moon {
+  width: 20px;
+  height: 20px;
+  margin: 0 5px;
+}
+
+/* BMI figure */
+.bmi-figure {
+  margin-top: 1rem;
+}
