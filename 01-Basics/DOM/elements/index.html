@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DOM ELEMENT</title>
+  </head>
+  <body style="background-color: #222222; color: #fefefe">
+    <div class="parent">
+      <div class="day">Monday</div>
+      <div class="day">Tuesday</div>
+      <div class="day">Wednessday</div>
+      <div class="day">Thursday</div>
+    </div>
+  </body>
+  <script>
+    const parent = document.querySelector(".parent");
+    // console.log(parent);
+    // console.log(parent.children[1].innerHTML);
+
+    // for (let i = 0; i < parent.children.length; i++) {
+    //   console.log(parent.children[i].innerHTML);
+    // }
+
+    // parent.children[1].style.color = "red";
+    // parent.firstElementChild.style.color = "blue";
+    // parent.lastElementChild.style.color = "green";
+
+    const dayOne = document.querySelector(".day");
+
+    // console.log(dayOne);
+    // dayOne.parentElement.style.backgroundColor = "orange";
+    // dayOne.nextElementSibling.style.color = "red";
+
+    // console.log("Nodes: ", parent.childNodes);
+
+    // Create a new element
+    const div = document.createElement("div");
+    div.className = "main";
+    div.id = `main-${Math.round(Math.random() * 10 + 1)}`;
+    div.setAttribute("title", "generated title");
+    div.style.backgroundColor = "blue";
+    div.style.padding = "10px";
+    const addText = document.createTextNode("Friday");
+    div.appendChild(addText);
+    parent.lastElementChild.appendChild(div);
+    console.log(div);
+  </script>
+</html>
