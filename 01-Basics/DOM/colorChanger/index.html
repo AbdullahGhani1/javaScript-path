@@ -1,0 +1,241 @@
+<!-- HTML Structure -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Color Changer - Vanilla JS</title>
+    <style>
+      /* Intro screen with gradient background and centered content */
+      #startScreen {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        background: linear-gradient(135deg, #f06, #4a90e2);
+        color: white;
+        font-family: sans-serif;
+      }
+      #startScreen h1 {
+        font-size: 3em;
+        margin-bottom: 20px;
+      }
+      #startScreen #scoreboard {
+        font-size: 2em;
+        margin-bottom: 20px;
+      }
+      #startScreen #startButton {
+        padding: 10px 20px;
+        font-size: 1.5em;
+        cursor: pointer;
+      }
+      /* Game screen with dark background */
+      #gameScreen {
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+        height: 100vh;
+        background: #222;
+      }
+      #gameScreen #scoreboardGame {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        font-size: 2em;
+        color: white;
+        z-index: 10;
+      }
+      /* Ball styling: a colored circle */
+      #ball {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: red;
+      }
+      /* Hurdle styling: falling colored circle */
+      .hurdle {
+        position: absolute;
+        top: -50px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        animation: fall linear;
+      }
+      /* Animation for falling hurdles */
+      @keyframes fall {
+        0% {
+          top: -50px;
+        }
+        100% {
+          top: 100vh;
+        }
+      }
+      /* Animation for ball jump */
+      @keyframes jump {
+        0% {
+          bottom: 0;
+        }
+        50% {
+          bottom: 150px;
+        }
+        100% {
+          bottom: 0;
+        }
+      }
+      .jump {
+        animation: jump 0.5s ease;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Intro Screen -->
+    <div id="startScreen">
+      <h1>Color Changer</h1>
+      <div id="scoreboard">Score: 0</div>
+      <button id="startButton">Start Game</button>
+    </div>
+
+    <!-- Game Screen (hidden initially) -->
+    <div id="gameScreen" style="display: none">
+      <div id="scoreboardGame">Score: 0</div>
+      <div id="ball"></div>
+    </div>
+
+    <script>
+      // --- Game State Variables ---
+      const startScreen = document.getElementById("startScreen");
+      const gameScreen = document.getElementById("gameScreen");
+      const startButton = document.getElementById("startButton");
+      const scoreboardGame = document.getElementById("scoreboardGame");
+      const ball = document.getElementById("ball");
+      let score = 0,
+        level = 1,
+        gameOver = false;
+      const colors = [
+        "red",
+        "orange",
+        "yellow",
+        "green",
+        "blue",
+        "indigo",
+        "violet",
+      ];
+      // Randomize initial ball color
+      ball.style.backgroundColor =
+        colors[Math.floor(Math.random() * colors.length)];
+
+      // Start Game: hide intro, show game, initialize score and loops
+      function startGame() {
+        startScreen.style.display = "none";
+        gameScreen.style.display = "block";
+        score = 0;
+        level = 1;
+        gameOver = false;
+        scoreboardGame.textContent = "Score: " + score;
+        // Spawn hurdles and run collision loop
+        obstacleInterval = setInterval(createObstacle, 1500);
+        gameInterval = setInterval(gameLoop, 30);
+      }
+      let ballPositionX = 0;
+      // Jump on ArrowUp key (keydown event)
+      document.addEventListener("keydown", function (e) {
+        if (gameOver) return;
+        if (e.key === "ArrowUp" && !ball.classList.contains("jump")) {
+          ball.classList.add("jump");
+          // Remove jump class after animation ends
+          setTimeout(() => ball.classList.remove("jump"), 500);
+        }
+
+        if (e.key === "ArrowLeft") {
+          console.log("Left key pressed");
+          ballPositionX -= 20; // move 20px left
+          ball.style.left = ballPositionX + "px";
+        }
+
+        if (e.key === "ArrowRight") {
+          ballPositionX += 20; // move 20px right
+          ball.style.left = ballPositionX + "px";
+        }
+      });
+
+      // Create a new hurdle (circle) with random color, animate downward
+      function createObstacle() {
+        if (gameOver) return;
+        const obstacle = document.createElement("div");
+        obstacle.className = "hurdle";
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        obstacle.style.backgroundColor = color;
+        // Adjust speed for level 2
+        const speed = level === 1 ? 5 : 3; // animation duration (s)
+        obstacle.style.animationDuration = speed + "s";
+        gameScreen.appendChild(obstacle);
+        obstacle.addEventListener("animationend", () => obstacle.remove());
+      }
+
+      // Main loop: check for passing or hitting hurdles
+      function gameLoop() {
+        const obstacles = document.getElementsByClassName("hurdle");
+        for (let i = 0; i < obstacles.length; i++) {
+          const obs = obstacles[i].getBoundingClientRect();
+          const ballRect = ball.getBoundingClientRect();
+          // When a hurdle reaches the ball’s vertical position...
+          if (obs.bottom >= ballRect.top) {
+            // If ball is jumping *and* colors match -> success
+            if (
+              ball.classList.contains("jump") &&
+              obstacles[i].style.backgroundColor === ball.style.backgroundColor
+            ) {
+              score += 2;
+              scoreboardGame.textContent = "Score: " + score;
+              obstacles[i].remove();
+              // Change ball to a new random color for next hurdle
+              ball.style.backgroundColor =
+                colors[Math.floor(Math.random() * colors.length)];
+              // Level-up checks
+              if (score >= 100 && level === 1) {
+                levelUp();
+              } else if (score >= 200 && level === 2) {
+                gameOver = true;
+                clearInterval(gameInterval);
+                clearInterval(obstacleInterval);
+                alert(
+                  "Congratulations! You completed both levels with score " +
+                    score
+                );
+              }
+            } else {
+              // Ball hit a mismatched hurdle or didn't jump -> Game Over
+              gameOver = true;
+              clearInterval(gameInterval);
+              clearInterval(obstacleInterval);
+              alert("Game Over! Final Score: " + score);
+            }
+            break; // only handle one collision per frame
+          }
+        }
+      }
+
+      // Advance to Level 2: increase difficulty
+      function levelUp() {
+        clearInterval(gameInterval);
+        clearInterval(obstacleInterval);
+        // Remove any remaining hurdles
+        document.querySelectorAll(".hurdle").forEach((h) => h.remove());
+        level = 2;
+        alert("Level 1 Complete! Starting Level 2.");
+        // Faster spawn rate for level 2
+        obstacleInterval = setInterval(createObstacle, 1000);
+        gameInterval = setInterval(gameLoop, 30);
+      }
+
+      // Hook up Start button
+      startButton.addEventListener("click", startGame);
+    </script>
+  </body>
+</html>

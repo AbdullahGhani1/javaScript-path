@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div>
+      <ul id="images">
+        <li>
+          <img
+            src="https://images.unsplash.com/photo-1562824864-3d4044bd2770?q=80&w=3237"
+            alt="Bear Cub"
+            id="bear-cub"
+          />
+        </li>
+        <li>
+          <img
+            src="https://plus.unsplash.com/premium_photo-1667030474693-6d0632f97029?q=80&w=3087"
+            alt="Kitten"
+            id="kitten"
+          />
+        </li>
+        <li>
+          <img
+            src="https://images.unsplash.com/photo-1719453410572-591af3831e64?q=80&w=2972"
+            alt="Deer"
+            id="deer"
+          />
+        </li>
+        <li>
+          <img
+            src="https://images.unsplash.com/photo-1534188753412-3e26d0d618d6?q=80&w=3087"
+            alt="Lion"
+            id="lion-cub"
+          />
+        </li>
+      </ul>
+    </div>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+        box-sizing: border-box;
+      }
+      body {
+        background-image: linear-gradient(
+          to right,
+          #141e30 0%,
+          #243b55 51%,
+          #141e30 100%
+        );
+      }
+      /* images like a 3d card 3 col grid template 3fr */
+      div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        box-sizing: inherit;
+      }
+      #images {
+        margin: 50px auto;
+        max-width: calc(100% - 40px);
+        display: grid;
+        grid-template-columns: repeat(3, minmax(200px, 1fr));
+        grid-gap: 20px;
+        box-sizing: inherit;
+      }
+      img {
+        width: 100%;
+        height: auto;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transition: transform 0.2s;
+        cursor: pointer;
+      }
+      @media screen and (max-width: 768px) {
+        #images {
+          grid-template-columns: repeat(2, minmax(200px, 1fr));
+          max-width: calc(100% - 20px);
+        }
+      }
+      @media screen and (max-width: 480px) {
+        #images {
+          grid-template-columns: repeat(1, minmax(200px, 1fr));
+          max-width: 100%;
+        }
+      }
+    </style>
+  </body>
+  <script>
+    // Events Sequential
+    // onCLick="alert('Lion Cub')" - not recommended
+    const lionCub = document.querySelector("#lion-cub");
+    // lionCub.onclick = () => {
+    //   // not recommended it gives less control
+    //   alert("Lion Cub");
+    // };
+
+    // attachEvent()
+    // JQuery - on
+
+    // lionCub.addEventListener(
+    //   "click",
+    //   (event) => {
+    //     // alert("Lion Cub clicked");
+    //     console.log(event);
+    //   },
+    //   false
+    // );
+
+    /*
+    provide defination of these in event object
+    type, timeStamp, defaultPrevented, target,
+     toElement, srcElement, CurrentTarget,
+     ClientX, ClientY, screenX, screenY, altKey, ctrlKey, shiftKey, metaKey,
+     button, buttons, relatedTarget, eventPhase, bubbles,
+     cancelable, composedPath(), stopPropagation(),
+     stopImmediatePropagation(), preventDefault()
+     ----
+    */
+    const images = document.querySelector("#images");
+    // images.addEventListener(
+    //   "click",
+    //   (event) => {
+    //     console.log("clicked inside the ul");
+    //   },
+    //   true //True => capture top to bottom.
+    // );
+
+    // lionCub.addEventListener(
+    //   "click",
+    //   (event) => {
+    //     console.log("clicked inside the lion cub");
+    //     // event.stopPropagation(); // stop bubbling not go to parent
+    //   },
+    //   true //capture top to bottom
+    // );
+
+    // remove
+    images.addEventListener("click", (event) => {
+      //   removeIt.remove();
+      //   removeIt.parentNode.removeChild(removeIt);
+      if (event.target.tagName === "IMG") {
+        let removeIt = event.target.parentNode;
+        console.log(event.target.id);
+        removeIt.remove();
+      }
+    });
+  </script>
+</html>
